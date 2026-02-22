@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Elite Travelhacking – Living in Hotels BasiX</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ════ RESET & BASE ════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: #0c0c0e;
+  color: #f5f0e8;
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --gold:   #c9a84c;
+  --goldL:  #e8c96a;
+  --dark:   #0c0c0e;
+  --dark2:  #141418;
+  --dark3:  #1e1e25;
+  --cream:  #f5f0e8;
+  --gray:   #8a8a9a;
+  --pad:    clamp(1.2rem, 5vw, 2.5rem);
+}
+
+/* ════ HERO ════ */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 5rem var(--pad) 4rem;
+}
+.hero-img {
+  position: absolute; inset: 0;
+  background: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80') center 30% / cover no-repeat;
+  filter: brightness(0.25) saturate(0.7);
+  animation: slowZoom 22s ease-in-out infinite alternate;
+}
+@keyframes slowZoom {
+  from { transform: scale(1.03); }
+  to   { transform: scale(1.10); }
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(12,12,14,.2) 0%,
+    rgba(12,12,14,.05) 35%,
+    rgba(12,12,14,.65) 75%,
+    rgba(12,12,14,1) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 700px;
+  animation: fadeUp 1.3s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(40px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.badge {
+  display: inline-block;
+  font-size: clamp(.55rem, 2.5vw, .65rem);
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,.4);
+  padding: .45rem 1.2rem;
+  margin-bottom: 1.6rem;
+}
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 12vw, 6.5rem);
+  font-weight: 300;
+  line-height: 1;
+  color: #fff;
+  margin-bottom: .4rem;
+}
+.hero h1 em { font-style: italic; color: var(--goldL); }
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1rem, 4vw, 1.35rem);
+  font-weight: 300;
+  color: rgba(201,168,76,.75);
+  letter-spacing: .1em;
+  margin-bottom: 1.5rem;
+}
+.hero-desc {
+  font-size: clamp(.82rem, 3.5vw, .9rem);
+  font-weight: 300;
+  line-height: 1.85;
+  color: rgba(245,240,232,.62);
+  max-width: 420px;
+  margin: 0 auto 2.5rem;
+}
+
+/* ════ CTA BUTTON ════ */
+.cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #c9a84c 0%, #e8c96a 100%);
+  color: #0c0c0e;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(.7rem, 3vw, .78rem);
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: 1.1rem 2rem;
+  min-height: 54px;          /* touch-friendly */
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(201,168,76,.32);
+  transition: transform .25s, box-shadow .25s;
+  -webkit-appearance: none;
+}
+.cta-btn:active { transform: scale(.97); }
+@media (hover: hover) {
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 44px rgba(201,168,76,.48); }
+}
+.cta-btn svg { flex-shrink: 0; }
+
+/* ════ PHOTO STRIP ════ */
+.photo-strip {
+  display: grid;
+  gap: 3px;
+  grid-template-columns: 1fr 1fr;
+}
+.photo-strip .main-ph { grid-column: 1 / -1; height: 52vw; max-height: 320px; }
+.photo-strip .sub-ph  { height: 32vw; max-height: 200px; }
+.photo-strip .ph-wrap { overflow: hidden; }
+.photo-strip .ph-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(.72) saturate(.82);
+  transition: transform .5s, filter .4s;
+}
+@media (hover: hover) {
+  .photo-strip .ph-wrap:hover img { transform: scale(1.05); filter: brightness(.88) saturate(1.05); }
+}
+
+/* ════ SECTION SHARED ════ */
+.sec { padding: clamp(3rem, 10vw, 5.5rem) var(--pad); }
+.wrap { max-width: 1100px; margin: 0 auto; }
+
+.sec-tag {
+  font-size: clamp(.56rem, 2.2vw, .62rem);
+  font-weight: 600;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .85rem;
+}
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.9rem, 6vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+}
+.sec-title em { font-style: italic; color: var(--goldL); }
+.sec-body {
+  font-size: clamp(.8rem, 3.2vw, .86rem);
+  font-weight: 300;
+  line-height: 1.9;
+  color: rgba(245,240,232,.62);
+}
+
+/* ════ ABOUT ════ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+@media(min-width:700px) {
+  .about-grid { grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
+}
+.about-photo {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(201,168,76,.15);
+  aspect-ratio: 16/10;
+}
+@media(min-width:700px) { .about-photo { aspect-ratio: 4/5; } }
+.about-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(.68) saturate(.78);
+}
+.about-badge {
+  position: absolute;
+  bottom: 1rem; left: 1rem;
+  background: rgba(12,12,14,.88);
+  border: 1px solid rgba(201,168,76,.3);
+  padding: .85rem 1.2rem;
+  text-align: center;
+}
+.about-badge .num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  color: var(--goldL);
+  font-weight: 300;
+  line-height: 1;
+}
+.about-badge .lbl {
+  font-size: .58rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-top: .25rem;
+}
+
+/* ════ MODULES ════ */
+.modules-bg { background: var(--dark2); }
+.modules-grid {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: 1fr;
+  margin-top: 2.5rem;
+}
+@media(min-width:520px) { .modules-grid { grid-template-columns: 1fr 1fr; } }
+@media(min-width:900px) { .modules-grid { grid-template-columns: repeat(4,1fr); } }
+
+.mod-card {
+  background: var(--dark3);
+  padding: 2rem 1.5rem;
+  border-top: 2px solid transparent;
+  transition: border-color .3s, background .3s;
+}
+@media (hover: hover) { .mod-card:hover { border-top-color: var(--gold); background: #222228; } }
+.mod-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  color: rgba(201,168,76,.12);
+  line-height: 1;
+  margin-bottom: .7rem;
+}
+.mod-icon { color: var(--gold); margin-bottom: .7rem; }
+.mod-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.1rem, 4vw, 1.28rem);
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: .55rem;
+}
+.mod-desc { font-size: clamp(.75rem, 2.8vw, .8rem); font-weight: 300; line-height: 1.8; color: var(--gray); }
+
+/* ════ MID CTA ════ */
+.mid-cta {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(4rem, 12vw, 7rem) var(--pad);
+  text-align: center;
+}
+.mid-cta-img {
+  position: absolute; inset: 0;
+  background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200&q=80') center / cover no-repeat;
+  filter: brightness(.18) saturate(.5);
+}
+.mid-cta-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(12,12,14,.88) 0%, rgba(12,12,14,.68) 100%);
+}
+.mid-cta-inner {
+  position: relative; z-index: 2;
+  max-width: 600px; margin: 0 auto;
+}
+
+/* ════ BENEFITS ════ */
+.benefits-grid {
+  display: grid;
+  gap: .85rem;
+  grid-template-columns: 1fr;
+  margin-top: 2.5rem;
+}
+@media(min-width:520px) { .benefits-grid { grid-template-columns: 1fr 1fr; } }
+
+.benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: .9rem;
+  padding: 1.25rem 1.3rem;
+  background: var(--dark2);
+  border-left: 2px solid rgba(201,168,76,.22);
+  transition: border-color .3s;
+}
+@media (hover: hover) { .benefit:hover { border-left-color: var(--gold); } }
+.benefit-icon { color: var(--gold); flex-shrink: 0; margin-top: 3px; }
+.benefit h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1rem, 4vw, 1.1rem);
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: .3rem;
+}
+.benefit p { font-size: clamp(.74rem, 2.8vw, .8rem); font-weight: 300; color: var(--gray); line-height: 1.75; }
+
+/* ════ PHOTO ROW ════ */
+.photo-row {
+  display: grid;
+  gap: 3px;
+  grid-template-columns: 1fr 1fr;
+}
+.photo-row .pr-main { grid-column: 1 / -1; height: 50vw; max-height: 300px; }
+.photo-row .pr-sub  { height: 35vw; max-height: 220px; }
+.photo-row .pr-wrap { overflow: hidden; }
+.photo-row .pr-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(.65) saturate(.8);
+  transition: transform .5s, filter .4s;
+}
+@media (hover: hover) {
+  .photo-row .pr-wrap:hover img { transform: scale(1.06); filter: brightness(.84) saturate(1.05); }
+}
+
+/* ════ FINAL CTA ════ */
+.final-cta {
+  position: relative;
+  text-align: center;
+  padding: clamp(5rem, 15vw, 9rem) var(--pad);
+  overflow: hidden;
+}
+.final-cta-img {
+  position: absolute; inset: 0;
+  background: url('https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200&q=80') center 60% / cover no-repeat;
+  filter: brightness(.17) saturate(.5);
+}
+.final-cta-overlay {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 85% 90% at 50% 105%, rgba(201,168,76,.09) 0%, transparent 65%);
+}
+.final-cta-inner { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
+.final-cta h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 9vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 1.3rem;
+}
+.final-cta h2 em { font-style: italic; color: var(--goldL); }
+.final-cta p {
+  font-size: clamp(.8rem, 3.2vw, .88rem);
+  font-weight: 300;
+  color: rgba(245,240,232,.6);
+  line-height: 1.85;
+  margin-bottom: 2.8rem;
+}
+.trust-row {
+  margin-top: 1.6rem;
+  display: flex;
+  justify-content: center;
+  gap: clamp(1rem, 4vw, 2rem);
+  flex-wrap: wrap;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: clamp(.62rem, 2.5vw, .7rem);
+  letter-spacing: .09em;
+  color: rgba(138,138,154,.65);
+  text-transform: uppercase;
+}
+.trust-item svg { color: var(--gold); opacity: .65; }
+
+/* ════ GOLD DIVIDER ════ */
+.divider { display:flex; align-items:center; gap:1rem; opacity:.18; padding: 0 var(--pad); }
+.d-line  { flex:1; height:1px; background:var(--gold); }
+.d-dot   { width:5px; height:5px; background:var(--gold); transform:rotate(45deg); flex-shrink:0; }
+
+/* ════ FOOTER ════ */
+footer {
+  background: var(--dark);
+  border-top: 1px solid rgba(201,168,76,.08);
+  padding: 1.8rem var(--pad);
+  text-align: center;
+  font-size: clamp(.62rem, 2.5vw, .7rem);
+  color: rgba(138,138,154,.4);
+  letter-spacing: .09em;
+  line-height: 1.7;
+}
+footer span { color: rgba(201,168,76,.5); }
+
+/* ════ SCROLL REVEAL ════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .75s ease, transform .75s ease;
+}
+.reveal.visible { opacity:1; transform:none; }
+.delay1 { transition-delay: .12s; }
+.delay2 { transition-delay: .22s; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="badge">Videokurs · Exklusiver Member Bereich</div>
+    <h1>Elite<br><em>Travel­hacking</em></h1>
+    <p class="hero-sub">Living in Hotels — BasiX Videokurs</p>
+    <p class="hero-desc">
+      Lerne wie Top-Travelhacker dauerhaft in 5-Sterne Hotels leben — für einen Bruchteil des normalen Preises.
+    </p>
+
+    <!-- ✅ HERO CTA — Link hier einfügen -->
+    <a href="DEIN-LINK-HIER" class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5,3 19,12 5,21"/>
+      </svg>
+      Jetzt Kurs starten
+    </a>
+  </div>
+</section>
+
+<!-- ══════════ PHOTO STRIP ══════════ -->
+<div class="photo-strip">
+  <div class="ph-wrap main-ph">
+    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80" alt="Luxury Hotel Pool">
+  </div>
+  <div class="ph-wrap sub-ph">
+    <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=500&q=80" alt="Hotel Lobby">
+  </div>
+  <div class="ph-wrap sub-ph">
+    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=500&q=80" alt="Airplane Window">
+  </div>
+</div>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="about-grid reveal">
+      <div class="about-photo">
+        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80" alt="Luxury Hotel Room">
+        <div class="about-badge">
+          <div class="num">5★</div>
+          <div class="lbl">Für alle erreichbar</div>
+        </div>
+      </div>
+      <div class="delay1 reveal">
+        <p class="sec-tag">Was ist dieser Kurs?</p>
+        <h2 class="sec-title">Hotels wie ein <em>Insider</em> buchen</h2>
+        <p class="sec-body">
+          Dieser Videokurs zeigt dir Schritt für Schritt die genauen Strategien: Loyalty-Programme, Kreditkarten-Hacks, Status-Matches und Upgrade-Anfragen — alles erklärt, alles umsetzbar.
+        </p>
+        <br>
+        <p class="sec-body">Kein teures Reisebüro. Keine Zufälle. Nur ein System — das funktioniert.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ MODULES ══════════ -->
+<div class="modules-bg">
+  <section class="sec">
+    <div class="wrap">
+      <div class="reveal" style="text-align:center">
+        <p class="sec-tag">Kursinhalt</p>
+        <h2 class="sec-title">Was du <em>lernst</em></h2>
+      </div>
+      <div class="modules-grid">
+
+        <div class="mod-card reveal delay1">
+          <div class="mod-num">01</div>
+          <div class="mod-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+            </svg>
+          </div>
+          <h3 class="mod-title">Rewards Grundlagen</h3>
+          <p class="mod-desc">Loyalty Programme verstehen und maximieren für gratis Nächte & Upgrades.</p>
+        </div>
+
+        <div class="mod-card reveal delay1">
+          <div class="mod-num">02</div>
+          <div class="mod-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3 class="mod-title">Punkte & Meilen</h3>
+          <p class="mod-desc">Kreditkarten-Strategien für maximalen Wert deiner Punkte.</p>
+        </div>
+
+        <div class="mod-card reveal delay2">
+          <div class="mod-num">03</div>
+          <div class="mod-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6"/><path d="M8.56 14.39L7 22l5-3 5 3-1.56-7.61"/>
+            </svg>
+          </div>
+          <h3 class="mod-title">Elite Status</h3>
+          <p class="mod-desc">Status schnell erreichen und halten — auch ohne exzessives Reisen.</p>
+        </div>
+
+        <div class="mod-card reveal delay2">
+          <div class="mod-num">04</div>
+          <div class="mod-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <h3 class="mod-title">Insider Tricks</h3>
+          <p class="mod-desc">Award Nights buchen, Upgrades anfragen & Deals finden wie ein Profi.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════ MID CTA ══════════ -->
+<div class="mid-cta reveal">
+  <div class="mid-cta-img"></div>
+  <div class="mid-cta-overlay"></div>
+  <div class="mid-cta-inner">
+    <p class="sec-tag">Member Area</p>
+    <h2 class="sec-title">Bereit für dein <em>erstes Upgrade?</em></h2>
+    <p class="sec-body" style="max-width:440px; margin: 0 auto 2.5rem; text-align:center">
+      Sofortzugang zu allen Videos, Downloads und der privaten Community — direkt nach dem Kauf.
+    </p>
+
+    <!-- ✅ MITTE CTA — Link hier einfügen -->
+    <a href="DEIN-LINK-HIER" class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10,17 15,12 10,7"/><line x1="15" y1="12" x2="3" y2="12"/>
+      </svg>
+      Zum Member Bereich
+    </a>
+  </div>
+</div>
+
+<!-- ══════════ BENEFITS ══════════ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="sec-tag">Vorteile</p>
+      <h2 class="sec-title">Was du <em>bekommst</em></h2>
+    </div>
+    <div class="benefits-grid reveal delay1">
+
+      <div class="benefit">
+        <div class="benefit-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+        </div>
+        <div>
+          <h4>Sofortzugang zu allen Videos</h4>
+          <p>Alle Lektionen direkt nach dem Kauf — kein Warten.</p>
+        </div>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+        </div>
+        <div>
+          <h4>Downloadbare Templates</h4>
+          <p>Checklisten, Vorlagen und Tracker für deinen Alltag.</p>
+        </div>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+        </div>
+        <div>
+          <h4>Private Community</h4>
+          <p>Exklusiver Zugang zur Elite Travelhacking Gruppe.</p>
+        </div>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+        </div>
+        <div>
+          <h4>Lifetime Updates</h4>
+          <p>Neue Inhalte und aktuelle Strategien — für immer inklusive.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PHOTO ROW ══════════ -->
+<div class="photo-row">
+  <div class="pr-wrap pr-main">
+    <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80" alt="Luxury Suite">
+  </div>
+  <div class="pr-wrap pr-sub">
+    <img src="https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=500&q=80" alt="Hotel Bar">
+  </div>
+  <div class="pr-wrap pr-sub">
+    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500&q=80" alt="Travel Road">
+  </div>
+</div>
+
+<!-- ══════════ FINAL CTA ══════════ -->
+<section class="final-cta reveal">
+  <div class="final-cta-img"></div>
+  <div class="final-cta-overlay"></div>
+  <div class="final-cta-inner">
+    <h2>Starte jetzt dein<br><em>Elite Reise-Leben</em></h2>
+    <p>
+      Hunderte Travelhacker nutzen diese Strategien täglich. Du kannst heute damit anfangen — Zugang sofort nach der Anmeldung.
+    </p>
+
+    <!-- ✅ FINAL CTA — Link hier einfügen -->
+    <a href="DEIN-LINK-HIER" class="cta-btn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+      Jetzt Zugang sichern
+    </a>
+
+    <div class="trust-row">
+      <div class="trust-item">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+        Sicherer Zugang
+      </div>
+      <div class="trust-item">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+        Sofort verfügbar
+      </div>
+      <div class="trust-item">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+        Lifetime Zugriff
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <p>© 2025 <span>Elite Travelhacking</span><br>Living in Hotels BasiX Videokurs · Alle Rechte vorbehalten</p>
+</footer>
+
+<script>
+  // Scroll reveal — reduced motion check
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  } else {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.07 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  }
+</script>
+</body>
+</html>
